@@ -1,0 +1,76 @@
+version: '3.9'
+services:
+
+    db-server:
+        container_name: db-server
+        image: mariadb:10.6.4
+        ports:
+            - "3306:3306"
+        working_dir: /app
+        volumes:
+            - .dbdata:/var/lib/mysql
+            - .:/app
+        environment:
+            DATABASE_URL: "mysql://app:app@db-server:3306/app?serverVersion=mariadb-10.6.4&charset=utf8"
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+            MYSQL_DATABASE: app
+            MYSQL_PASSWORD: app
+            MYSQL_USER: app
+        healthcheck:
+            test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "--password=root" ]
+            interval: 12s
+            timeout: 5s
+            retries: 4
+        restart: always
+
+    php8-fpm:
+        container_name: php8-fpm
+        ports:
+            - "9000:9000"
+        build:
+            context: ./docker/php8-fpm/
+            dockerfile: ./Dockerfile
+            args:
+                env: dev
+        working_dir: /app
+        environment:
+            DATABASE_TIMEZONE: UTC
+        volumes:
+            - ~/.composer/docker-cache/:/root/.composer:cached
+            - ./:/app
+            - .dbdata:/var/lib/mysql
+        depends_on:
+            - db-server
+        logging:
+            driver: "json-file"
+            options:
+                max-size: '10M'
+                max-file: '2'
+        restart: always
+
+    nginx-server:
+        container_name: nginx-server
+        ports:
+            - "80:80"
+            - "443:443"
+        build:
+            context: ./docker
+            dockerfile: ./nginx/Dockerfile
+            args:
+                env: dev
+        working_dir: /app
+        volumes:
+            - /var/log/nginx:/var/log/nginx/
+            - .:/app
+            - /etc/nginx/ssl:/etc/nginx/ssl
+            - .dbdata:/var/lib/mysql
+        depends_on:
+            - php8-fpm
+        restart: always
+
+
+
+volumes:
+    .dbdata:
+

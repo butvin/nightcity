@@ -1,0 +1,8 @@
+SHELL=/bin/bash
+# examples
+0 */1 * * * docker exec php-fpm bin/console app:job1
+0 */2 * * * docker exec php-fpm bin/console app:job2
+0 */4 * * * docker exec php-fpm bin/console app:job3
+0 */6 * * * docker exec php-fpm bin/console app:job4
+0 */12 * * * docker exec php-fpm bin/console app:job5
+0 */24 * * * docker exec php-fpm bin/console app:job6
