@@ -8,9 +8,9 @@ Short overviews, instructions and commands, scripts and samples for maintaining 
  - Nginx 1.21.3 in **nginx** container. Listen on `http://127.0.0.1:80/`
  - `PHP 8.1.x` (**php-fpm** & **php-cli**), `Composer 2.x`, `NPM 7.x` with webpack (EncoreWebpack) `Opcache`, `Redis` uses sessions storing are in **php8-fpm** container. RabbitMQ as async worker on **php8-cli**
  - `Symfony 4.4 LTS` Framework /SF4.4 or SF4.4LTS/  ( ~~or~~ [Symfony 5.3 /SF5.3/](https://github.com/butvin/galera))
- - `Mariadb 10.6.4` served on `3306` port
- - `Redis 5.x`
- - `RabbitMQ 3.9.5` listens on `15672` port at `127.0.0.1`
+ - `Mariadb 10.6.4` served via `3306` port in **db-server**
+ - `Redis 5.x` in **redis** container
+ - `RabbitMQ 3.9.5` listens on `15672` port at `127.0.0.1` - **rabitmq** container
 
 
 ## Pre-Build configure environments
