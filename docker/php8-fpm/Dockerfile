@@ -1,4 +1,5 @@
-ARG PHP_VERSION='8.1.0RC3-fpm-alpine'
+#ARG PHP_VERSION='8.1.0RC3-fpm-alpine'
+ARG PHP_VERSION='8.0.11-fpm-alpine'
 FROM php:${PHP_VERSION}
 
 ARG env
@@ -14,13 +15,15 @@ RUN set -eux; \
         curl \
         wget  \
         bash \
+        zip \
+        unzip \
+        libzip-dev \
+        autoconf \
         ca-certificates && \
     rm -rf /var/cache/apk/*
 
 RUN set -eux; \
 	apk add -u --update-cache --virtual .build-deps \
-		zip unzip \
-		libzip-dev \
 		coreutils \
 		dpkg-dev \
 		dpkg \
@@ -32,6 +35,25 @@ RUN set -eux; \
     && apk del .build-deps \
     && rm -rf /tmp/* \
     && rm -rf /var/cache/apk/*
+
+
+## amqp
+#ARG AMQP_VERSION='1.11.0beta'
+#RUN set -eux; \
+#    pecl install -o -f amqp-${AMQP_VERSION} && \
+#    docker-php-ext-enable amqp
+
+## xdebug
+ARG XDEBUG_VERSION='3.0.4'
+RUN set -eux; \
+    apk add --no-cache $PHPIZE_DEPS && \
+    pecl install xdebug-${XDEBUG_VERSION}  && \
+    docker-php-ext-enable xdebug && \
+    touch /var/log/xdebug.log
+
+### redis
+#RUN pecl install redis
+#RUN docker-php-ext-enable redis
 
 #RUN locale-gen en_US.UTF-8
 ENV LANG en_US.UTF-8

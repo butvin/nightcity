@@ -1,8 +1,7 @@
 ###> project/common ###
 .idea/
 .vscode/
-.dbdata/
-docker/.dbdata/
+_tmp/
 ###< project/common ###
 
 
@@ -15,3 +14,17 @@ docker/.dbdata/
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> docker volumes ###
+.dbdata/
+.data/
+data'
+docker/.dbdata/
+docker/.data/
+docker/data/
+###< docker volumes ###

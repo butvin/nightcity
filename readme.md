@@ -5,12 +5,16 @@
 Short overviews, instructions and commands, scripts and samples for maintaining internal docker services and the App in generally.
 
  - 6 separated containers with servers/services in the box;
- - Nginx 1.21.3 in **nginx** container. Listen on `http://127.0.0.1:80/`
- - `PHP 8.1.x` (**php-fpm** & **php-cli**), `Composer 2.x`, `NPM 7.x` with webpack (EncoreWebpack) `Opcache`, `Redis` uses sessions storing are in **php8-fpm** container. RabbitMQ as async worker on **php8-cli**
+ - `Nginx 1.21.3` in **nginx** container. Listen on [http://127.0.0.1:80/](http://127.0.0.1:80/)
+ - `PHP 8.0.11` (stable) and stack inside **php8-fpm** on `9000` port
+   - `Zend Engine v4.0.11`,
+   - with `Zend OPcache v8.0.11`, Copyright (c),
+   - with `Xdebug v3.0.4` on 9003,
+   - with `Composer v2.1.9`,
  - `Symfony 4.4 LTS` Framework /SF4.4 or SF4.4LTS/  ( ~~or~~ [Symfony 5.3 /SF5.3/](https://github.com/butvin/galera))
  - `Mariadb 10.6.4` served via `3306` port in **db-server**
  - `Redis 5.x` in **redis** container
- - `RabbitMQ 3.9.5` listens on `15672` port at `127.0.0.1` - **rabitmq** container
+ - `RabbitMQ 3.9.5` listens on `15672` port at `127.0.0.1` - **rabitmq** container as async worker on **php8-cli**
 
 
 ## Pre-Build configure environments
