@@ -13,11 +13,13 @@ RUN set -eux; \
         vim  \
         mc \
         curl \
-        wget  \
+        wget \
+        tree \
         bash \
         zip \
         unzip \
         libzip-dev \
+        fish \
         autoconf \
         ca-certificates && \
     rm -rf /var/cache/apk/*
@@ -30,26 +32,31 @@ RUN set -eux; \
 		gcc \
 		libc-dev \
 		make \
-		fish \
     && docker-php-ext-install zip mysqli pdo pdo_mysql opcache \
     && apk del .build-deps \
     && rm -rf /tmp/* \
     && rm -rf /var/cache/apk/*
 
+## xdebug
+ARG XDEBUG_VERSION='3.0.4'
+ARG AMQP_VERSION='1.11.0beta'
+
+RUN pecl channel-update pecl.php.net
+
+RUN set -eux; \
+    apk add --no-cache $PHPIZE_DEPS && \
+    pecl install -o -f xdebug-${XDEBUG_VERSION} && \
+    docker-php-ext-enable \
+        xdebug \
+        && \
+    touch /var/log/xdebug.log && \
+    rm -rf /tmp/pear
 
 ## amqp
 #ARG AMQP_VERSION='1.11.0beta'
 #RUN set -eux; \
 #    pecl install -o -f amqp-${AMQP_VERSION} && \
 #    docker-php-ext-enable amqp
-
-## xdebug
-ARG XDEBUG_VERSION='3.0.4'
-RUN set -eux; \
-    apk add --no-cache $PHPIZE_DEPS && \
-    pecl install xdebug-${XDEBUG_VERSION}  && \
-    docker-php-ext-enable xdebug && \
-    touch /var/log/xdebug.log
 
 ### redis
 #RUN pecl install redis

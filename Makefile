@@ -11,9 +11,9 @@ build: \
 
 up-infrastructure:
 	docker-compose \
+		--env-file .env \
 		-f 'docker-compose.yml' \
-		-p 'nightcitypr' \
-		--env-file '.env' \
+		-p 'nightcity' \
 	up --build -d
 
 
